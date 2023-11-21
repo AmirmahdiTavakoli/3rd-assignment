@@ -105,7 +105,7 @@ class MultiAgentSearchAgent(Agent):
     is another abstract class.
     """
 
-    def __init__(self, evalFn='betterEvaluationFunction', depth='2'):
+    def __init__(self, evalFn='scoreEvaluationFunction', depth='2'):
         self.index = 0  # Pacman is always agent index 0
         self.evaluationFunction = better
         self.depth = int(depth)
@@ -131,7 +131,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
                     best_move = action
             if depth == self.depth:
                 return best_move
-            return max_value
+            else:
+                return max_value
 
         else:
             min_value = float('inf')
@@ -146,7 +147,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
     def getAction(self, gameState):
         return self.minimax(gameState, self.index, self.depth)
-
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
@@ -220,16 +220,13 @@ def betterEvaluationFunction(currentGameState):
                         queue.append((new_point, dis + 1))
         return 50
 
-
     ghost_pos = currentGameState.getGhostPositions()
     nearest_ghost = 1000
     for pos in ghost_pos:
         nearest_ghost = min(nearest_ghost, util.manhattanDistance(pos, pac_pos))
     if nearest_ghost < 4:
         nearest_ghost = -20
-    return currentGameState.getScore() + (1 / (8585 * find_nearest_food(currentGameState))) + nearest_ghost
-
-
+    return currentGameState.getScore() + (1 / (10000 * find_nearest_food(currentGameState))) + nearest_ghost
 
 
 # Abbreviation
